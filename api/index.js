@@ -1,18 +1,26 @@
-import express from 'express';
-import mongoose from 'mongoose'
-import dotenv from 'dotenv'
-dotenv.config()
-import userRoutes from './routes/userRoute.js'
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+import userRoutes from "./routes/userRoute.js";
+import authRoutes from "./routes/authRoute.js";
 
-mongoose.connect(process.env.MONGO)
-.then(()=>{
-    console.log("DB is connected")
-})
+mongoose
+  .connect(process.env.MONGO)
+  .then(() => {
+    console.log("DB is connected");
+  })
+  .catch((error) => {
+    console.log("Error connecting to DB", error);
+  });
 
 const app = express();
+app.use(express.json());
 
-app.listen(3000,() => {
-    console.log('Server is running on port  3000!');
-})
 
-app.use('/api/user',userRoutes)
+app.listen(3000, () => {
+  console.log("Server is running on port  3000!");
+});
+
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
