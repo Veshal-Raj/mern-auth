@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import userRoutes from "./routes/userRoute.js";
 import authRoutes from "./routes/authRoute.js";
-import path from 'path'
+import adminRoutes from "./routes/adminRoute.js"
+// import path from 'path'
 import cookieParser from "cookie-parser";
 import morgan from 'morgan'
 
@@ -31,8 +32,13 @@ app.get('/api/',(req,res) => {
   res.json({message: 'api is working'})
 })
 
-app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/admin", adminRoutes);
+// app.get("/api/admin", (req,res) => {
+//   console.log('hello admin')
+// });
+
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

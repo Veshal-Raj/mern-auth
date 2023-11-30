@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
     profilePicture: {
       type: String,
       default:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fprofile&psig=AOvVaw0EHgwAAfVyL3K5X4-EfL5x&ust=1701316453591000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCMi0xOmn6IIDFQAAAAAdAAAAABAE",
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.dreamstime.com%2Fillustration%2Fweb-profile.html&psig=AOvVaw33CvSCtjDBPQOIznVP39ED&ust=1701429739680000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCOih9erN64IDFQAAAAAdAAAAABAe",
     },
   },
   { timestamps: true }

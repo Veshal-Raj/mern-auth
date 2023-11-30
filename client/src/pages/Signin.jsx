@@ -34,7 +34,11 @@ export default function Signin() {
         return dispatch(signInFailure(data))
       }
       dispatch(signInSuccess(data))
-      navigate("/");
+      if (data.role === 'Admin') {
+        navigate("/admin")
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       dispatch(signInFailure(error))
     }

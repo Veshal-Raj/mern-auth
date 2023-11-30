@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import Admin from "../pages/Admin";
 export default function Header() {
   const { currentUser } = useSelector(state => state.user)
-  return (
+  return  (
+    <>
     <div className="bg-slate-200">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
@@ -25,5 +27,7 @@ export default function Header() {
         </ul>
       </div>
     </div>
+   
+    </>
   );
 }
