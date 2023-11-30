@@ -16,10 +16,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ["Admin", "Customer"],
+      default: "Customer",
+    },
     profilePicture: {
       type: String,
-      default: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fprofile&psig=AOvVaw0EHgwAAfVyL3K5X4-EfL5x&ust=1701316453591000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCMi0xOmn6IIDFQAAAAAdAAAAABAE',
-    }
+      default:
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fprofile&psig=AOvVaw0EHgwAAfVyL3K5X4-EfL5x&ust=1701316453591000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCMi0xOmn6IIDFQAAAAAdAAAAABAE",
+    },
   },
   { timestamps: true }
 );
