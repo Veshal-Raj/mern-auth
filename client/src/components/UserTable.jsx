@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MakeAdminButton from "./admin/MakeAdminButton";
+import { AddNewUser } from "./admin/AddNewUser";
 
 export const UserTable = () => {
   const [userData, setUserData] = useState([]);
@@ -47,7 +48,7 @@ export const UserTable = () => {
   };
 
   const changeRole = async (userId, isAdmin) => {
-    console.log(isAdmin);
+    // console.log(isAdmin);
     try {
       const response = await fetch(`/api/admin/changeRole/${userId}`, {
         method: "PUT",
@@ -74,6 +75,8 @@ export const UserTable = () => {
   };
 
   return (
+    <>
+      <AddNewUser />
     <div className="mx-auto max-w-2xl overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800">
         <thead className="text-xs uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
@@ -126,5 +129,6 @@ export const UserTable = () => {
         </tbody>
       </table>
     </div>
+    </>
   );
 };
