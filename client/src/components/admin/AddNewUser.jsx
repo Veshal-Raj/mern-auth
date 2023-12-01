@@ -1,11 +1,47 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import axios from 'axios'
 
 export const AddNewUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    role: '',
+  })
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+  const handleInputChange = (e) => {
+    const {name, value} = e.target;
+    setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+    }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newUser = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+    }
+    console.log('New user, ', newUser);
+
+    setFormData({
+        username: '',
+        email: '',
+        password: '',
+        role: 'Customer',
+    })
+    toggleModal()
+
+  }
 
   return (
     <div>
@@ -63,7 +99,7 @@ export const AddNewUser = () => {
                 </div>
                 {/* Modal body */}
                 <div className="p-4 md:p-5">
-                  <form className="space-y-4" action="#">
+                  <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                       <label
                         htmlFor="username"
@@ -75,6 +111,8 @@ export const AddNewUser = () => {
                         type="text"
                         name="username"
                         id="username"
+                        value={formData.username}
+                        onChange={handleInputChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="Enter username"
                         required
@@ -91,6 +129,8 @@ export const AddNewUser = () => {
                         type="email"
                         name="email"
                         id="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="Enter email"
                         required
@@ -107,6 +147,8 @@ export const AddNewUser = () => {
                         type="password"
                         name="password"
                         id="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
                         placeholder="••••••••"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         required
@@ -122,8 +164,10 @@ export const AddNewUser = () => {
                       <select
                         id="role"
                         name="role"
+                        value={formData.role}
+                        onChange={handleInputChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        defaultValue="Customer" // Set the default value here
+
                         required
                       >
                         <option value="Admin">Admin</option>
