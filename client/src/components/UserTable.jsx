@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MakeAdminButton from "./admin/MakeAdminButton";
 import { AddNewUser } from "./admin/AddNewUser";
+import { EditUser } from "./admin/EditUser";
 
 export const UserTable = () => {
   const [userData, setUserData] = useState([]);
@@ -101,14 +102,9 @@ export const UserTable = () => {
               <td className="px-6 py-3">{user.role}</td>
               <td className="px-6 py-3 uppercase">{user.status}</td>
               <td className="px-6 py-3 text-right">
-                <span
-                  onClick={editUser}
-                  id="editUser"
-                  className="text-blue-600 hover:underline hover:cursor-pointer"
-                >
-                  Edit
-                </span>
+                <EditUser userId={user._id} />
                 <span className="mx-2 text-gray-500 dark:text-gray-400">|</span>
+                
                 <span
                   onClick={() => blockUser(user._id, user.isActive)}
                   id="blockUser"
