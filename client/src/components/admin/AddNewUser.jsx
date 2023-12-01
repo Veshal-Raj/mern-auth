@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from 'axios'
+import toast, { Toaster } from 'react-hot-toast';
 
 export const AddNewUser = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -7,7 +8,7 @@ export const AddNewUser = () => {
     username: '',
     email: '',
     password: '',
-    role: '',
+    role: 'Customer',
   })
 
   const toggleModal = () => {
@@ -15,33 +16,47 @@ export const AddNewUser = () => {
   };
 
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
-    setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-    }))
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newUser = {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
-    }
-    console.log('New user, ', newUser);
-
     setFormData({
-        username: '',
-        email: '',
-        password: '',
-        role: 'Customer',
-    })
-    toggleModal()
-
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
   }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const newUser = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      role: formData.role,
+    };
+  
+    try {
+      const response = await axios.post("/api/admin/addUser", newUser);
+      console.log(response);
+  
+      if (response.status === 201) {
+        console.log('User created successfully');
+        toast.success('User created successfully');
+      } else {
+        console.log('Unexpected status code:', response.status);
+        toast.error('Unexpected error occurred');
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+      toast.error('Error creating user');
+    }
+  
+    setFormData({
+      username: '',
+      email: '',
+      password: '',
+      role: '',
+    });
+    toggleModal();
+  };
+  
 
   return (
     <div>
@@ -52,6 +67,7 @@ export const AddNewUser = () => {
       >
         Add User
       </button>
+      <Toaster />
 
       {/* Main modal */}
       {isModalOpen && (
@@ -111,7 +127,7 @@ export const AddNewUser = () => {
                         type="text"
                         name="username"
                         id="username"
-                        value={formData.username}
+                        value={formData.username }
                         onChange={handleInputChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="Enter username"
@@ -164,7 +180,7 @@ export const AddNewUser = () => {
                       <select
                         id="role"
                         name="role"
-                        value={formData.role}
+                        value={formData.role }
                         onChange={handleInputChange}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
 
