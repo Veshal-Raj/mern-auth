@@ -1,12 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,  } from "react";
 import MakeAdminButton from "./admin/MakeAdminButton";
 import { AddNewUser } from "./admin/AddNewUser";
 import { EditUser } from "./admin/EditUser";
-import { SearchUser } from "./admin/SearchUser";
+// import { SearchUser } from "./admin/SearchUser";
+// import { UserContext } from "../Context/userContext";
 
 export const UserTable = () => {
   const [userData, setUserData] = useState([]);
+  const [copyUserData, setCopyUserData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+
+console.log(copyUserData)
   const [dataUpdate, setDataUpdate] = useState(1) // to update the table (for add, edit ....)
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -15,6 +21,7 @@ export const UserTable = () => {
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
+          setCopyUserData(data)
         } else {
           console.error("Error fetching data. Status:", response.status);
         }
@@ -29,7 +36,7 @@ export const UserTable = () => {
 
   const editUser = () => {
     console.log("edit user is clicked");
-  };
+  };  
 
   const blockUser = async (userId, isActive) => {
     try {
@@ -74,7 +81,7 @@ export const UserTable = () => {
           user._id === userId ? { ...user, role: updatedRole } : user
         )
       );
-      } else {
+      } else {  
         console.error("Error updating user role");
       }
     } catch (error) {
@@ -85,8 +92,30 @@ export const UserTable = () => {
   return (
     <>
       <AddNewUser setDataUpdate={setDataUpdate} />
+        {/* <SearchUser copyUserData={copyUserData} setCopyUserData={setCopyUserData}/> */}
+        <div className="search p-2 mx-[400] flex items-center justify-center">
+        <input
+          type="text"
+          className="search-box p-2 border border-gray-400 rounded-l-md bg-gray-100 focus:outline-none focus:border-blue-500"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          placeholder="Search user"
+        />
+        <button
+          type="button"
+          onClick={() => {
+            console.log('button clicked')
+            const filteredData = copyUserData.filter((user) => user.username.toLowerCase().includes(searchText.toLowerCase()))
+            console.log('filterdData ', filteredData)
+            setUserData(filteredData)
+          }}
+          className="search-button p-2 bg-green-400 text-gray-900 rounded-r-md border-none cursor-pointer hover:bg-green-500"
+        >
+          Search
+        </button>
+      </div>
+
     <div className="mx-auto max-w-2xl overflow-x-auto shadow-md sm:rounded-lg">
-      <SearchUser />
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800">
         <thead className="text-xs uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
           <tr>
