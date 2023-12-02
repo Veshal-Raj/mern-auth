@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MakeAdminButton from "./admin/MakeAdminButton";
 import { AddNewUser } from "./admin/AddNewUser";
 import { EditUser } from "./admin/EditUser";
+import { SearchUser } from "./admin/SearchUser";
 
 export const UserTable = () => {
   const [userData, setUserData] = useState([]);
@@ -11,8 +12,12 @@ export const UserTable = () => {
     const fetchUserData = async () => {
       try {
         const response = await fetch("/api/admin/getAllUsers");
-        const data = await response.json();
-        setUserData(data);
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data);
+        } else {
+          console.error("Error fetching data. Status:", response.status);
+        }
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -81,6 +86,7 @@ export const UserTable = () => {
     <>
       <AddNewUser setDataUpdate={setDataUpdate} />
     <div className="mx-auto max-w-2xl overflow-x-auto shadow-md sm:rounded-lg">
+      <SearchUser />
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800">
         <thead className="text-xs uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -104,7 +110,7 @@ export const UserTable = () => {
               <td className="px-6 py-3">{user.role}</td>
               <td className="px-6 py-3 uppercase">{user.status}</td>
               <td className="px-6 py-3 text-right">
-                <EditUser userId={user._id} />
+                <EditUser userId={user._id} setDataUpdate={setDataUpdate}/>
                 <span className="mx-2 text-gray-500 dark:text-gray-400">|</span>
                 
                 <span

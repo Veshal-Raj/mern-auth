@@ -1,7 +1,9 @@
 import  { useEffect, useState } from 'react'
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
-export const EditUser = ({userId}) => {
+
+export const EditUser = ({userId, setDataUpdate}) => {
     const [storeUserId, setStoreUserId] = useState(userId);
     console.log(userId)
     console.log(storeUserId)
@@ -53,12 +55,43 @@ export const EditUser = ({userId}) => {
     }, [ storeUserId]);
     console.log(userData);
   
-    const editUser = () => {
-      console.log(userData);
+    const editUser = async () => {
+      try {
+        console.log(storeUserId);
+    
+        const updatedUserData = {
+          userId: userData.user._id,
+          username: userData.username || userData.user.username,
+          email: userData.email || userData.user.email,
+          password: userData.password || userData.user.password,
+          role: userData.role || userData.user.role,
+          // Add more fields if needed
+        };
+    
+        console.log(updatedUserData);
+    
+        const response = await axios.put(`/api/admin/editUser/${storeUserId}`, updatedUserData);
+    
+        if (response.status === 200) {
+          console.log('User updated successfully');
+          toggleModal();
+          setDataUpdate(2)
+          toast.success('User updated successfully')
+        } else {
+          console.error('Failed to update user');
+          toast.error('Failed to update user')
+
+        }
+      } catch (error) {
+        console.error('Error updating user: ', error);
+        toast.error('Error updating user')
+
+      }
       
     };
   return (
     <div>
+    
          <span
                   onClick={toggleModal}
             
@@ -113,7 +146,7 @@ export const EditUser = ({userId}) => {
                 </div>
                 {/* Modal body */}
                 <div className="p-4 md:p-5">
-                  <form className="space-y-4" >
+                  <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                     <div>
                       <label
                         htmlFor="username"
@@ -126,10 +159,11 @@ export const EditUser = ({userId}) => {
                         type="text"
                         name="username"
                         id="username"
-                        value={userData.user? userData.user.username:''}
+                        // value={}
                         onChange={(e) => setUserData({...userData, username: e.target.value})}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="Enter username"
+                        defaultValue={userData.user? userData.user.username:''}
                         required
                       />
                     </div>
@@ -144,10 +178,11 @@ export const EditUser = ({userId}) => {
                         type="email"
                         name="email"
                         id="email"
-                        value={userData.user? userData.user.email:''}
+                        // value={}
                         onChange={(e) => setUserData({...userData, email: e.target.value})}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="Enter email"
+                        defaultValue={userData.user? userData.user.email:''}
                         required
                       />
                     </div>
@@ -162,7 +197,7 @@ export const EditUser = ({userId}) => {
                         type="password"
                         name="password"
                         id="password"
-                        value={''}
+                        // value={''}
                         onChange={(e) => setUserData({...userData, password: e.target.value})}
                         placeholder="••••••••"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -179,10 +214,10 @@ export const EditUser = ({userId}) => {
                       <select
                         id="role"
                         name="role"
-                        value={userData.user? userData.user.role:''}
+                        // value={}
                         onChange={(e) => setUserData({...userData, role: e.target.value})}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-
+                        defaultValue={userData.user? userData.user.role:''}
                         required
                       >
                         <option value="Admin">Admin</option>
@@ -197,7 +232,7 @@ export const EditUser = ({userId}) => {
                       className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                       onClick={editUser}
                     >
-                      Add User
+                      Update User
                     </button>
                   </form>
                 </div>
