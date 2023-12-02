@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const EditUser = ({userId}) => {
     const [storeUserId, setStoreUserId] = useState(userId);
+    console.log(userId)
     console.log(storeUserId)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userData, setUserData] = useState({
@@ -118,13 +119,14 @@ export const EditUser = ({userId}) => {
                         htmlFor="username"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Username {userData.username}
+                        Username 
+  
                       </label>
                       <input
                         type="text"
                         name="username"
                         id="username"
-                        value={userData.username }
+                        value={userData.user? userData.user.username:''}
                         onChange={(e) => setUserData({...userData, username: e.target.value})}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="Enter username"
@@ -142,7 +144,7 @@ export const EditUser = ({userId}) => {
                         type="email"
                         name="email"
                         id="email"
-                        value={userData.email}
+                        value={userData.user? userData.user.email:''}
                         onChange={(e) => setUserData({...userData, email: e.target.value})}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="Enter email"
@@ -160,7 +162,7 @@ export const EditUser = ({userId}) => {
                         type="password"
                         name="password"
                         id="password"
-                        value={userData.password}
+                        value={''}
                         onChange={(e) => setUserData({...userData, password: e.target.value})}
                         placeholder="••••••••"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -177,7 +179,7 @@ export const EditUser = ({userId}) => {
                       <select
                         id="role"
                         name="role"
-                        value={userData.role }
+                        value={userData.user? userData.user.role:''}
                         onChange={(e) => setUserData({...userData, role: e.target.value})}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
 

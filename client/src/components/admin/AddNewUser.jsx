@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast';
 
-export const AddNewUser = () => {
+export const AddNewUser = ({setDataUpdate}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -38,6 +38,7 @@ export const AddNewUser = () => {
   
       if (response.status === 201) {
         console.log('User created successfully');
+        setDataUpdate(2) // to update the table
         toast.success('User created successfully');
       } else {
         console.log('Unexpected status code:', response.status);
