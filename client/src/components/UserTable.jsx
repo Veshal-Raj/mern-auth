@@ -2,8 +2,7 @@ import { useEffect, useState,  } from "react";
 import MakeAdminButton from "./admin/MakeAdminButton";
 import { AddNewUser } from "./admin/AddNewUser";
 import { EditUser } from "./admin/EditUser";
-// import { SearchUser } from "./admin/SearchUser";
-// import { UserContext } from "../Context/userContext";
+
 
 export const UserTable = () => {
   const [userData, setUserData] = useState([]);
@@ -34,9 +33,7 @@ console.log(copyUserData)
     setDataUpdate(1) // to update the table
   }, [dataUpdate]);
 
-  const editUser = () => {
-    console.log("edit user is clicked");
-  };  
+ 
 
   const blockUser = async (userId, isActive) => {
     try {
