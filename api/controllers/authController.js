@@ -22,6 +22,8 @@ export const signin = async (req, res, next) => {
   try {
     const validUser = await User.findOne({ email });
     if (!validUser) return next(errorHandler(404, "User not found!"));
+    if (!validUser.isActive) return next(errorHandler(403, "User is blocked!"));
+
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) return next(errorHandler(403, "Wrong credentials!"));
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
@@ -40,6 +42,10 @@ export const google = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
+
+      if (!user.isActive) return next(errorHandler(403, "User is blocked!"));
+
+
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: hashedPassword, ...rest } = user._doc;
       const expiryDate = new Date(Date.now() + 3600000);
@@ -56,6 +62,10 @@ export const google = async (req, res, next) => {
         password: hashedPassword,
         profilePicture: req.body.photo,
       });
+
+      if (!newUser.isActive) return next(errorHandler(403, "User is blocked!"));
+
+
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password: hashedPassword2, ...rest} = newUser._doc;
